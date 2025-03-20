@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Math Quiz Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f4f4f9;
+      margin: 0;
+    }
+
+    .container {
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+      transition: opacity 0.3s ease-in-out;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    .form-group input:focus {
+      border-color: #007bff;
+      outline: none;
+    }
+
+    .form-group.error input {
+      border-color: #e74c3c;
+    }
+
+    .form-group.error label {
+      color: #e74c3c;
+    }
+
+    .form-group.error .error-message {
+      color: #e74c3c;
+      font-size: 14px;
+      margin-top: 5px;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #0056b3;
+    }
+
+    .btn-secondary {
+      background-color: #27ae60;
+    }
+
+    .btn-secondary:hover {
+      background-color: #239b56;
+    }
+
+    .error-message {
+      color: #e74c3c;
+      font-size: 14px;
+      margin-top: 5px;
+    }
+
+    #question-container input {
+      width: 50px;
+      text-align: center;
+      margin: 5px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    #answers-container button {
+      margin: 5px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
+    }
+
+    #answers-container button:hover {
+      background-color: #0056b3;
+    }
+
+    #timer {
+      font-size: 24px;
+      margin-top: 20px;
+      color: #e74c3c;
+    }
+
+    #result-container {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    #result-container div {
+      margin: 5px 0;
+      font-size: 16px;
+    }
+
+    #result-container div.correct {
+      color: #2ecc71;
+    }
+
+    #result-container div.wrong {
+      color: #e74c3c;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="home-page" class="container">
+    <h1>Welcome to the Math Quiz Game</h1>
+    <button id="register-btn" class="btn">Register</button>
+    <button id="login-btn" class="btn btn-secondary">Login</button>
+  </div>
+  <div id="registration-page" class="container" style="display: none">
+    <h1>Register</h1>
+    <form id="registration-form">
+      <div class="form-group">
+        <label for="first-name">First Name</label>
+        <input type="text" id="first-name" value="Karan" name="first-name" required />
+        <div class="error-message" id="first-name-error"></div>
+      </div>
+      <div class="form-group">
+        <label for="last-name">Last Name</label>
+        <input type="text" id="last-name" value="Raina" name="last-name" required />
+        <div class="error-message" id="last-name-error"></div>
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" value="k@email.com" required />
+        <div class="error-message" id="email-error"></div>
+      </div>
+      <div class="form-group">
+        <label for="profile-picture">Profile Picture URL</label>
+        <input type="text" id="profile-picture" value="http://google.com" name="profile-picture" />
+        <div class="error-message" id="profile-picture-error"></div>
+      </div>
+      <div class="form-group">
+        <label for="birthdate">Birthdate</label>
+        <input type="date" id="birthdate" name="birthdate" />
+        <div class="error-message" id="birthdate-error"></div>
+      </div>
+      <div class="form-group">
+        <label for="phone-number">Phone Number</label>
+        <input type="tel" id="phone-number" name="phone-number" value="9999999999" required />
+        <div class="error-message" id="phone-number-error"></div>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" value="9999999999" required />
+        <div class="error-message" id="password-error"></div>
+      </div>
+      <button type="submit" class="btn">Register</button>
+    </form>
+  </div>
+  <div id="login-page" class="container" style="display: none">
+    <h1>Login</h1>
+    <form id="login-form">
+      <div class="form-group">
+        <label for="login-email">Email</label>
+        <input type="email" id="login-email" name="login-email" required />
+        <div class="error-message" id="login-email-error"></div>
+      </div>
+      <div class="form-group">
+        <label for="login-password">Password</label>
+        <input type="password" id="login-password" name="login-password" required />
+        <div class="error-message" id="login-password-error"></div>
+      </div>
+      <button type="submit" class="btn">Login</button>
+    </form>
+  </div>
+  <div id="quiz-page" class="container" style="display: none">
+    <h1>Math Quiz</h1>
+    <section>
+      <p id="user-name"></p>
+      <p id="user-email"></p>
+    </section>
+    <div id="question-container">
+      <input id="num1" readonly />
+      <input id="operator" readonly />
+      <input id="num2" readonly />
+    </div>
+    <div id="answers-container">
+      <button class="answer-btn"></button>
+      <button class="answer-btn"></button>
+      <button class="answer-btn"></button>
+      <button class="answer-btn"></button>
+    </div>
+    <div id="timer">30</div>
+  </div>
+  <div id="result-page" class="container" style="display: none">
+    <h1>Quiz Results</h1>
+    <div id="result-container"></div>
+    <button id="home-btn" class="btn btn-secondary">Return to Home</button>
+  </div>
+
+  <script>
+    const homePage = document.getElementById("home-page");
+    const registrationPage = document.getElementById("registration-page");
+    const loginPage = document.getElementById("login-page");
+    const quizPage = document.getElementById("quiz-page");
+    const resultPage = document.getElementById("result-page");
+    const registrationForm = document.getElementById("registration-form");
+    const loginForm = document.getElementById("login-form");
+    const questionContainer = document.getElementById("question-container");
+    const answersContainer = document.getElementById("answers-container");
+    const resultContainer = document.getElementById("result-container");
+    const timerDisplay = document.getElementById("timer");
+    const homeButton = document.getElementById("home-btn");
+    const registerButton = document.getElementById("register-btn");
+    const loginButton = document.getElementById("login-btn");
+// game logic
+
+    let timer;
+    let score = 0;
+    let currentQuestionIndex = 0;
+    let questions = [];
+    let results = [];
+
+    const operators = ["+", "-", "x", "/"];
+
+    function generateRandomNumber() {
+      return Math.floor(Math.random() * 10) + 1; // Ensure numbers are between 1 and 10
+    }
+
+    function generateRandomOperator() {
+      return operators[Math.floor(Math.random() * operators.length)];
+    }
+    function embedUserDetails() {
+      const domName = document.getElementById("user-name");
+      domName.innerHTML = `Name: ${window.user.firstName} ${window.user.lastName}`;
+    }
+    function calculate(num1, operator, num2) {
+      switch (operator) {
+        case "+":
+          return num1 + num2;
+        case "-":
+          return num1 - num2;
+        case "x":
+          return num1 * num2;
+        case "/":
+          return parseFloat((num1 / num2).toFixed(2));
+      }
+    }
+
+    function generateQuestion() {
+      const num1 = generateRandomNumber();
+      let num2 = generateRandomNumber();
+      const operator = generateRandomOperator();
+
+      // Avoid division by zero
+      if (operator === "/" && num2 === 0) {
+        num2 = 1;
+      }
+
+      const correctAnswer = calculate(num1, operator, num2);
+      const answers = [correctAnswer];
+
+      while (answers.length < 4) {
+        const randomAnswer =
+          correctAnswer + Math.floor(Math.random() * 5 - 2); // Random offset
+        if (!answers.includes(randomAnswer)) {
+          answers.push(randomAnswer);
+        }
+      }
+
+      answers.sort(() => Math.random() - 0.5);
+
+      return { num1, num2, operator, answers, correctAnswer };
+    }
+
+    function startQuiz() {
+      registrationPage.style.display = "none";
+      loginPage.style.display = "none";
+      quizPage.style.display = "block";
+      questions = Array.from({ length: 10 }, () => generateQuestion());
+      currentQuestionIndex = 0;
+      score = 0;
+      results = [];
+      showQuestion();
+    }
+
+    function showQuestion() {
+      clearInterval(timer); // Clear the previous timer
+      const currentQuestion = questions[currentQuestionIndex];
+      document.getElementById("num1").value = currentQuestion.num1;
+      document.getElementById("operator").value = currentQuestion.operator;
+      document.getElementById("num2").value = currentQuestion.num2;
+      const answerButtons = document.querySelectorAll(".answer-btn");
+      answerButtons.forEach((btn, index) => {
+        btn.textContent = currentQuestion.answers[index];
+        btn.onclick = () =>
+          selectAnswer(
+            currentQuestion.answers[index],
+            currentQuestion.correctAnswer
+          );
+      });
+      startTimer();
+    }
+
+    function selectAnswer(selectedAnswer, correctAnswer) {
+      clearInterval(timer);
+      const isCorrect = selectedAnswer === correctAnswer;
+      results.push({
+        question: `${questions[currentQuestionIndex].num1} ${questions[currentQuestionIndex].operator} ${questions[currentQuestionIndex].num2}`,
+        selectedAnswer,
+        correctAnswer,
+        isCorrect,
+      });
+      if (isCorrect) score++;
+      if (currentQuestionIndex < 9) {
+        currentQuestionIndex++;
+        showQuestion();
+      } else {
+        showResults();
+      }
+    }
+
+    function startTimer() {
+      let time = 30;
+      timerDisplay.textContent = time;
+      timer = setInterval(() => {
+        time--;
+        timerDisplay.textContent = time;
+        if (time === 0) {
+          clearInterval(timer);
+          selectAnswer(null, questions[currentQuestionIndex].correctAnswer); // Handle time running out
+        }
+      }, 1000);
+    }
+
+    function showResults() {
+      quizPage.style.display = "none";
+      resultPage.style.display = "block";
+      resultContainer.innerHTML = results
+        .map(
+          (result, index) =>
+            `<div class="${result.isCorrect ? "correct" : "wrong"}">
+                  Q${index + 1}: ${result.question} = ${result.correctAnswer
+            } | Your answer: ${result.selectedAnswer} | ${result.isCorrect ? "Correct" : "Wrong"
+            }
+                </div>`
+        )
+        .join("");
+      resultContainer.innerHTML += `<p>Final Score: ${score}/10</p>`;
+    }
+    function getFormDetails() {
+      const firstName = document.getElementById("first-name").value.trim();
+      const lastName = document.getElementById("last-name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const birthdate = document.getElementById("birthdate").value;
+      const phoneNumber = document
+        .getElementById("phone-number")
+        .value.trim();
+      const password = document.getElementById("password").value.trim();
+      const profilePicture = document
+        .getElementById("profile-picture")
+        .value.trim();
+
+      return {
+        firstName,
+        lastName,
+        email,
+        birthdate,
+        phoneNumber,
+        password,
+        profilePicture,
+      };
+    }
+
+    function validateRegistrationForm() {
+      let isValid = true;
+      const firstName = document.getElementById("first-name").value.trim();
+      const lastName = document.getElementById("last-name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const birthdate = document.getElementById("birthdate").value;
+      const phoneNumber = document
+        .getElementById("phone-number")
+        .value.trim();
+      const password = document.getElementById("password").value.trim();
+      const profilePicture = document
+        .getElementById("profile-picture")
+        .value.trim();
+
+      if (!firstName) {
+        isValid = false;
+        document.getElementById("first-name-error").textContent =
+          "First name is required";
+        document.getElementById("first-name").classList.add("error");
+      } else {
+        document.getElementById("first-name-error").textContent = "";
+        document.getElementById("first-name").classList.remove("error");
+      }
+
+      if (!lastName) {
+        isValid = false;
+        document.getElementById("last-name-error").textContent =
+          "Last name is required";
+        document.getElementById("last-name").classList.add("error");
+      } else {
+        document.getElementById("last-name-error").textContent = "";
+        document.getElementById("last-name").classList.remove("error");
+      }
+
+      if (!email) {
+        isValid = false;
+        document.getElementById("email-error").textContent =
+          "Email is required";
+        document.getElementById("email").classList.add("error");
+      } else if (!/\S+@\S+\.\S+/.test(email)) {
+        isValid = false;
+        document.getElementById("email-error").textContent =
+          "Email is invalid";
+        document.getElementById("email").classList.add("error");
+      } else {
+        document.getElementById("email-error").textContent = "";
+        document.getElementById("email").classList.remove("error");
+      }
+
+      if (!birthdate) {
+        isValid = false;
+        document.getElementById("birthdate-error").textContent =
+          "Birthdate is required";
+        document.getElementById("birthdate").classList.add("error");
+      } else {
+        document.getElementById("birthdate-error").textContent = "";
+        document.getElementById("birthdate").classList.remove("error");
+      }
+
+      if (!phoneNumber) {
+        isValid = false;
+        document.getElementById("phone-number-error").textContent =
+          "Phone number is required";
+        document.getElementById("phone-number").classList.add("error");
+      } else if (!/^\d{10}$/.test(phoneNumber)) {
+        isValid = false;
+        document.getElementById("phone-number-error").textContent =
+          "Phone number is invalid";
+        document.getElementById("phone-number").classList.add("error");
+      } else {
+        document.getElementById("phone-number-error").textContent = "";
+        document.getElementById("phone-number").classList.remove("error");
+      }
+
+      if (!password) {
+        isValid = false;
+        document.getElementById("password-error").textContent =
+          "Password is required";
+        document.getElementById("password").classList.add("error");
+      } else if (password.length < 6) {
+        isValid = false;
+        document.getElementById("password-error").textContent =
+          "Password must be at least 6 characters";
+        document.getElementById("password").classList.add("error");
+      } else {
+        document.getElementById("password-error").textContent = "";
+        document.getElementById("password").classList.remove("error");
+      }
+
+      if (profilePicture && !/^https?:\/\/\S+$/.test(profilePicture)) {
+        isValid = false;
+        document.getElementById("profile-picture-error").textContent =
+          "Invalid URL";
+        document.getElementById("profile-picture").classList.add("error");
+      } else {
+        document.getElementById("profile-picture-error").textContent = "";
+        document.getElementById("profile-picture").classList.remove("error");
+      }
+
+      return isValid;
+    }
+
+    function validateLoginForm() {
+      let isValid = true;
+      const email = document.getElementById("login-email").value.trim();
+      const password = document.getElementById("login-password").value.trim();
+
+      if (!email) {
+        isValid = false;
+        document.getElementById("login-email-error").textContent =
+          "Email is required";
+        document.getElementById("login-email").classList.add("error");
+      } else if (!/\S+@\S+\.\S+/.test(email)) {
+        isValid = false;
+        document.getElementById("login-email-error").textContent =
+          "Email is invalid";
+        document.getElementById("login-email").classList.add("error");
+      } else {
+        document.getElementById("login-email-error").textContent = "";
+        document.getElementById("login-email").classList.remove("error");
+      }
+
+      if (!password) {
+        isValid = false;
+        document.getElementById("login-password-error").textContent =
+          "Password is required";
+        document.getElementById("login-password").classList.add("error");
+      } else {
+        document.getElementById("login-password-error").textContent = "";
+        document.getElementById("login-password").classList.remove("error");
+      }
+
+      return isValid;
+    }
+
+    registrationForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      if (validateRegistrationForm()) {
+        const body = getFormDetails();
+        fetch("/api/register", {
+          method: "POST",
+          body: JSON.stringify(body),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }).then(async (res) => {
+          if (!res.ok) {
+            alert("Some Error Occured");
+            throw new Error(res.body);
+          }
+          registrationPage.style.display = "none";
+          startQuiz();
+          window.user = await res.json();
+          embedUserDetails()
+        });
+      }
+    });
+
+    loginForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      if (validateLoginForm()) {
+        const email = document.getElementById("login-email").value.trim();
+        const password = document
+          .getElementById("login-password")
+          .value.trim();
+
+        const body = { email, password };
+
+        fetch("/api/login", {
+          method: "POST",
+          body: JSON.stringify(body),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }).then(async (res) => {
+          if (!res.ok) {
+            alert("Incorrect Login details");
+            throw new Error(res.body);
+          }
+          loginPage.style.display = "none";
+          window.user = await res.json();
+          embedUserDetails()
+          startQuiz();
+        });
+      }
+    });
+
+    registerButton.onclick = () => {
+      homePage.style.display = "none";
+      registrationPage.style.display = "block";
+    };
+
+    loginButton.onclick = () => {
+      homePage.style.display = "none";
+      loginPage.style.display = "block";
+    };
+
+    homeButton.onclick = () => {
+      resultPage.style.display = "none";
+      homePage.style.display = "block";
+    };
+  </script>
+</body>
+
+</html> 
